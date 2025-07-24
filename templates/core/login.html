@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Giriş Yap{% endblock %}
+
+{% block content %}
+<style>
+    .auth-container {
+        max-width: 420px;
+        margin: 4rem auto;
+        padding: 2.5rem;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e9ecef;
+    }
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .auth-header h2 {
+        font-weight: 700;
+        color: #343a40;
+    }
+    .form-control:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    .btn-primary {
+        padding: 0.75rem;
+        font-weight: 600;
+    }
+</style>
+
+<div class="auth-container">
+    <div class="auth-header">
+        <h2>Giriş Yap</h2>
+    </div>
+
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            Kullanıcı adı veya şifre hatalı. Lütfen tekrar deneyin.
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+        </div>
+        <div class="mb-4">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Giriş Yap</button>
+        </div>
+    </form>
+
+    <p class="text-center mt-4 mb-0">
+        Hesabın yok mu? <a href="{% url 'signup' %}">Hemen Kayıt Ol</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+/* src/App.css */
+
+.App {
+  flex-grow: 1;
+}
+
+.list-group-item {
+  border-color: rgba(0,0,0,.05);
+}
+
+.list-group-item a {
+  color: #007bff; /* Link rengi */
+}
+
+.list-group-item a:hover {
+  color: #0056b3; /* Link hover rengi */
+}
+
+.btn-primary {
+  background-color: #28a745; /* Duolingo yeşili gibi */
+  border-color: #28a745;
+}
+
+.btn-primary:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}

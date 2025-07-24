@@ -1,0 +1,4 @@
+/* frontend/src/pages/Register.css */
+
+/* Tasarım tutarlılığı için Login.css ile aynı stilleri kullanır. */
+@import './Login.css';

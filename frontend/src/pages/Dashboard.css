@@ -1,0 +1,305 @@
+/* frontend/src/pages/Dashboard.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --dashboard-font: 'Poppins', sans-serif;
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background-color: var(--primary-bg);
+  padding: 80px 1.5rem 1.5rem 1.5rem; /* Üst boşluğu artır, yan ve alt boşlukları ayarla */
+  box-sizing: border-box;
+  font-family: var(--dashboard-font);
+  gap: 1.5rem; /* Sütunlar arasına boşluk ekle */
+}
+
+.dashboard-column {
+  padding: 0; /* Sütunların kendi iç padding'ini sıfırla */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  height: 100%; /* Sütunların tam yüksekliği kaplamasını sağla */
+}
+
+.left-column {
+  flex: 0 0 320px;
+}
+
+.middle-column {
+  flex: 2;
+  background: linear-gradient(180deg, #330867, #30cfd0);
+  border-radius: 16px;
+  color: white;
+  display: flex; /* Flexbox olarak ayarla */
+  flex-direction: column; /* Dikey yönde sırala */
+  padding: 1.5rem; /* İç boşlukları koru */
+  overflow: hidden; /* İçerik taşmasını engelle */
+}
+
+.middle-column .chat-header h3 {
+  color: white;
+}
+
+.middle-column .ai-message {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+}
+
+.middle-column .user-message {
+  background-color: #30cfd0;
+  color: #1e1e1e;
+  font-weight: 500;
+}
+
+.middle-column .chat-input-area {
+  background-color: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.middle-column .chat-input-area input {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  color: #2e2e2e;
+}
+
+.middle-column .chat-input-area input::placeholder {
+  color: #6e6e6e;
+}
+
+.motivation-badge {
+  background: linear-gradient(135deg, #30cfd0, #330867);
+  color: var(--white);
+  text-align: center;
+  padding: 1.5rem;
+}
+.motivation-badge i {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.motivation-badge h4, .motivation-badge p {
+  color: var(--white);
+}
+
+.right-column {
+  flex: 0 0 320px;
+}
+
+/* --- Genel Widget Stili --- */
+.widget {
+  background-color: var(--widget-bg);
+  padding: 1.5rem;
+  border-radius: 16px; /* Modern köşe yuvarlaklığı */
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07); /* Yumuşak gölge */
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 1.2rem;
+}
+
+/* --- Sol Sütun --- */
+.weekly-goals {
+  text-align: center;
+}
+
+.progress-ring {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 1rem auto;
+  background: conic-gradient(var(--turquoise) 75%, var(--border-color) 0);
+}
+
+.progress-ring-inner {
+  width: 110px;
+  height: 110px;
+  background: var(--widget-bg);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.study-schedule ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.study-schedule li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.study-schedule i {
+  color: var(--soft-blue);
+  font-size: 1.3rem;
+}
+
+/* --- Orta Sütun (Sohbet) --- */
+.chat-header h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.message-bubble {
+  padding: 0.8rem 1.2rem;
+  border-radius: 18px;
+  max-width: 85%;
+  line-height: 1.6;
+}
+
+.ai-message {
+  background-color: var(--widget-bg);
+  border: 1px solid var(--border-color);
+  align-self: flex-start;
+  border-top-left-radius: 4px;
+}
+
+.user-message {
+  background-color: var(--turquoise);
+  color: var(--white);
+  align-self: flex-end;
+  border-top-right-radius: 4px;
+}
+
+.chat-input-area {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--primary-bg);
+  border-top: 1px solid var(--border-color);
+}
+
+.chat-input-area input {
+  flex-grow: 1;
+  padding: 0.9rem 1.2rem;
+  border-radius: 25px;
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  font-family: var(--dashboard-font);
+}
+
+.middle-column .chat-input-area button {
+  background: #ffffff;
+  border: none;
+  color: #330867;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  padding: 0; /* İç boşluğu sıfırla */
+}
+
+.middle-column .chat-input-area button i {
+  margin: 0; /* Simgenin kendi margin/padding'ini sıfırla */
+  padding: 0;
+}
+
+.middle-column .chat-input-area button:hover {
+  transform: scale(1.1) rotate(15deg);
+  background: #f0f0f0;
+}
+
+.middle-column .chat-input-area button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  background: #ffffff;
+}
+
+/* --- Sağ Sütun --- */
+.yks-quick-tips .widget-title {
+  color: var(--turquoise);
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobil için tek sütun */
+  gap: 1rem;
+}
+
+.tip-card {
+  background-color: var(--primary-bg);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.tip-card-icon {
+  font-size: 1.5rem;
+  color: var(--soft-blue);
+  margin-top: 4px;
+}
+
+.tip-card-content h5 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  color: var(--text-dark);
+}
+
+.tip-card-content p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Diğer widget'lar için genel stil */
+.quick-test .test-button {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  text-align: left;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--dashboard-font);
+}
+
+.quick-test .test-button:hover {
+  background-color: var(--primary-bg);
+  border-color: var(--soft-blue);
+}

@@ -1,0 +1,26 @@
+# Sanal ortam
+venv/
+
+# Gizli anahtarlar
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Veritabanı
+*.sqlite3
+
+# IDE/Editör dosyaları
+.vscode/
+.idea/
+
+# Veritabanı dosyası
+db.sqlite3
+chroma_db/
+faiss_index/
+
+# React bağımlılıkları
+frontend/node_modules/
+frontend/dist/
+frontend/.env

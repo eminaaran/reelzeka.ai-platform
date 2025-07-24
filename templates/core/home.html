@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Anasayfa{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        <h1>ReelZeka.ai'ye Hoş Geldiniz!</h1>
+        <p class="lead">Yapay zeka destekli asistanınızla tanışın.</p>
+        {% if not user.is_authenticated %}
+            <p>Devam etmek için lütfen giriş yapın veya kayıt olun.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary me-2">Giriş Yap</a>
+            <a href="{% url 'signup' %}" class="btn btn-success">Kayıt Ol</a>
+        {% else %}
+            <p>Merhaba, {{ user.username }}! Size nasıl yardımcı olabilirim?</p>
+            <!-- Buraya ana sayfa içeriği veya sohbet arayüzü gelebilir -->
+        {% endif %}
+    </div>
+{% endblock %}
