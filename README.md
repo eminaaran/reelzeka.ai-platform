@@ -45,7 +45,7 @@ Bu projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izley
 *   Git
 
 ### Backend (Django) Kurulumu
-```bash
+
 # 1. Projeyi klonlayın
 git clone https://github.com/eminaaran/reelzeka.ai-platform.git
 cd reelzeka.ai-platform
@@ -71,3 +71,29 @@ python manage.py createsuperuser
 # 6. Django sunucusunu başlatın
 python manage.py runserver
 # Backend şimdi http://127.0.0.1:8000 adresinde çalışıyor olacak
+
+Frontend (React) Kurulumu
+
+# 1. Yeni bir terminal açın ve frontend klasörüne gidin
+cd frontend
+
+# 2. Gerekli Node.js kütüphanelerini kurun
+npm install
+
+# 3. React geliştirme sunucusunu başlatın
+npm run dev
+# Frontend şimdi http://localhost:5173 adresinde çalışıyor olacak
+
+
+🎓 Proje Durumu & Gelecek Planları
+Bu proje, Düzce Üniversitesi Bilgisayar Mühendisliği Bölümü için bir bitirme projesi olarak geliştirilmiştir ve aktif olarak geliştirilmeye devam etmektedir.
+Temel Django API ve React Arayüzü
+RAG Sistemi ve Dinamik Belge Yönetimi
+Kullanıcı Kayıt/Giriş Sistemi (Cookie & CSRF)
+Pomodoro Sayacı Entegrasyonu
+İnteraktif Çalışma Takvimi
+Test ve Sınav Modülü
+Multimodal RAG (Görsel ve Grafik Anlama)
+✍️ Yazar
+[Muhammet Emin Aran] 
+
