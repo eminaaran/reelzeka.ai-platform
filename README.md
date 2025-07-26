@@ -46,43 +46,43 @@ Bu projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izley
 
 ### Backend (Django) Kurulumu
 
-# 1. Projeyi klonlayın
+ 1. Projeyi klonlayın
 git clone https://github.com/eminaaran/reelzeka.ai-platform.git
 cd reelzeka.ai-platform
 
-# 2. Sanal ortam oluşturun ve aktive edin
+ 2. Sanal ortam oluşturun ve aktive edin
 python -m venv venv
-# Windows için:
+ Windows için:
 venv\Scripts\activate
-# macOS/Linux için:
-# source venv/bin/activate
+ macOS/Linux için:
+ source venv/bin/activate
 
-# 3. Gerekli Python kütüphanelerini kurun
+ 3. Gerekli Python kütüphanelerini kurun
 pip install -r requirements.txt
 
-# 4. .env dosyasını oluşturun ve API anahtarınızı ekleyin
-# Ana dizinde .env adında bir dosya oluşturun ve içine şunu yazın:
-# OPENAI_API_KEY="sk-..."
+ 4. .env dosyasını oluşturun ve API anahtarınızı ekleyin
+ Ana dizinde .env adında bir dosya oluşturun ve içine şunu yazın:
+OPENAI_API_KEY="sk-..."
 
-# 5. Veritabanını oluşturun ve admin kullanıcısı yaratın
+ 5. Veritabanını oluşturun ve admin kullanıcısı yaratın
 python manage.py migrate
 python manage.py createsuperuser
 
-# 6. Django sunucusunu başlatın
+ 6. Django sunucusunu başlatın
 python manage.py runserver
-# Backend şimdi http://127.0.0.1:8000 adresinde çalışıyor olacak
+ Backend şimdi http://127.0.0.1:8000 adresinde çalışıyor olacak
 
 Frontend (React) Kurulumu
 
-# 1. Yeni bir terminal açın ve frontend klasörüne gidin
+ 1. Yeni bir terminal açın ve frontend klasörüne gidin
 cd frontend
 
-# 2. Gerekli Node.js kütüphanelerini kurun
+ 2. Gerekli Node.js kütüphanelerini kurun
 npm install
 
-# 3. React geliştirme sunucusunu başlatın
+ 3. React geliştirme sunucusunu başlatın
 npm run dev
-# Frontend şimdi http://localhost:5173 adresinde çalışıyor olacak
+ Frontend şimdi http://localhost:5173 adresinde çalışıyor olacak
 
 
 🎓 Proje Durumu & Gelecek Planları
@@ -93,7 +93,8 @@ Kullanıcı Kayıt/Giriş Sistemi (Cookie & CSRF)
 Pomodoro Sayacı Entegrasyonu
 İnteraktif Çalışma Takvimi
 Test ve Sınav Modülü
-Multimodal RAG (Görsel ve Grafik Anlama)
-✍️ Yazar
-[Muhammet Emin Aran] 
+Multimodal RAG sistemi (Görsel ve Grafik Anlama)
+
+# ✍️ Yazar
+## Muhammet Emin Aran
 
