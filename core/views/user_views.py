@@ -1,15 +1,19 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from rest_framework import permissions
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework import permissions, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from ..serializers.user_serializers import UserSerializer, UserRegistrationSerializer
 
 @ensure_csrf_cookie
 def get_csrf_token(request):
-    return JsonResponse({"detail": "CSRF cookie set"})
+    try:
+        return JsonResponse({"detail": "CSRF cookie set"})
+    except Exception as e:
+        print("CSRF token hatası:", str(e))
+        return JsonResponse({"error": str(e)}, status=500)
 
 class UserRegistrationAPIView(APIView):
     permission_classes = [permissions.AllowAny]

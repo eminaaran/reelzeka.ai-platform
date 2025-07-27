@@ -5,7 +5,6 @@ import '../base.css';
 import './Dashboard.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import TestList from '../components/TestList';
-import QuickTest from '../components/QuickTest';
 
 const TipCard = ({ icon, title, description }) => (
   <div className="tip-card">
@@ -18,22 +17,19 @@ const TipCard = ({ icon, title, description }) => (
 );
 
 const Dashboard = () => {
-  const userName = "Ogrenci";
-  const [progress, setProgress] = useState(75);
-  const [activeTab, setActiveTab] = useState('chat');
-
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [isAiResponding, setIsAiResponding] = useState(false);
   const chatContainerRef = useRef(null);
-  const inputRef = useRef(null); // Input için ref oluştur
+  const inputRef = useRef(null);
+  const [progress, setProgress] = useState(75);
 
   useEffect(() => {
     setMessages([
-      { id: 1, sender: 'ai', text: `Merhaba ${userName}, bugün ne öğrenmek istersin?` }
+      { id: 1, sender: 'ai', text: `Merhaba! Bugün ne öğrenmek istersin?` }
     ]);
     inputRef.current?.focus(); // Sayfa yüklendiğinde input'a odaklan
-  }, [userName]);
+  }, []);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -52,7 +48,7 @@ const Dashboard = () => {
     setIsAiResponding(true);
 
     try {
-      const response = await apiClient.post('/rag-query/', { question: currentMessage });
+      const response = await apiClient.post('/api/rag-query/', { question: currentMessage });
       const aiResponse = { id: Date.now() + 1, sender: 'ai', text: response.data.answer };
       setMessages(prev => [...prev, aiResponse]);
     } catch (error) {
@@ -90,54 +86,42 @@ const Dashboard = () => {
 
       {/* ORTA SÜTUN */}
       <div className="dashboard-column middle-column">
-        <div className="tabs">
-          <button className={activeTab === 'chat' ? 'active' : ''} onClick={() => setActiveTab('chat')}>
-            <i className="bi bi-chat-dots"></i> Sohbet Asistanı
-          </button>
-          <button className={activeTab === 'tests' ? 'active' : ''} onClick={() => setActiveTab('tests')}>
-            <i className="bi bi-journal-check"></i> Testler
-          </button>
+        <div className="chat-container">
+          <div className="chat-header">
+            <h3>Sohbet Asistanı</h3>
+          </div>
+          <div className="chat-messages" ref={chatContainerRef}>
+            {messages.map(msg => (
+              <div key={msg.id} className={`message-bubble ${msg.sender}-message`}>
+                {msg.text}
+              </div>
+            ))}
+            {isAiResponding && (
+              <div className="message-bubble ai-message">...</div>
+            )}
+          </div>
+          <form className="chat-input-area" onSubmit={handleSendMessage}>
+            <input 
+              ref={inputRef}
+              type="text" 
+              placeholder="Merak ettiğin bir konuyu sor..." 
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              disabled={isAiResponding}
+            />
+            <button type="submit" disabled={isAiResponding || newMessage.trim() === ''}>
+              <i className="bi bi-send-fill"></i>
+            </button>
+          </form>
         </div>
-
-        {activeTab === 'chat' ? (
-          <div className="chat-container">
-            <div className="chat-header">
-              <h3>Sohbet Asistanı</h3>
-            </div>
-            <div className="chat-messages" ref={chatContainerRef}>
-              {messages.map(msg => (
-                <div key={msg.id} className={`message-bubble ${msg.sender}-message`}>
-                  {msg.text}
-                </div>
-              ))}
-              {isAiResponding && (
-                <div className="message-bubble ai-message">...</div>
-              )}
-            </div>
-            <form className="chat-input-area" onSubmit={handleSendMessage}>
-              <input 
-                ref={inputRef}
-                type="text" 
-                placeholder="Merak ettiğin bir konuyu sor..." 
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                disabled={isAiResponding}
-              />
-              <button type="submit" disabled={isAiResponding || newMessage.trim() === ''}>
-                <i className="bi bi-send-fill"></i>
-              </button>
-            </form>
-          </div>
-        ) : (
-          <div className="test-container">
-            <TestList />
-          </div>
-        )}
       </div>
 
       {/* SAĞ SÜTUN */}
       <div className="dashboard-column right-column">
-        <QuickTest />
+        <div className="widget available-tests">
+          <h4 className="widget-title">Mevcut Testler</h4>
+          <TestList />
+        </div>
         <div className="widget yks-quick-tips">
           <h4 className="widget-title">YKS Hızlı İpuçları</h4>
           <div className="tips-grid">

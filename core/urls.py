@@ -22,14 +22,14 @@ router.register(r'admin/models', AdminAPIViewSet, basename='admin-models')
 
 urlpatterns = [
     # API endpoints
-    path('api/register/', UserRegistrationAPIView.as_view(), name='api_register'),
-    path('api/login/', UserLoginAPIView.as_view(), name='api_login'),
-    path('api/logout/', UserLogoutAPIView.as_view(), name='api_logout'),
-    path('api/check-auth/', CheckAuthAPIView.as_view(), name='api_check_auth'),
-    path('api/csrf/', get_csrf_token, name='api_csrf'),
-    path('api/rag-query/', RagQueryAPIView.as_view(), name='api_rag_query'),
-    path('api/admin/users/', UserListView.as_view(), name='api_admin_users'),
+    path('register/', UserRegistrationAPIView.as_view(), name='api_register'),
+    path('login/', UserLoginAPIView.as_view(), name='api_login'),
+    path('logout/', UserLogoutAPIView.as_view(), name='api_logout'),
+    path('check-auth/', CheckAuthAPIView.as_view(), name='api_check_auth'),
+    path('csrf/', get_csrf_token, name='api_csrf'),
+    path('rag-query/', RagQueryAPIView.as_view(), name='api_rag_query'),
+    path('admin/users/', UserListView.as_view(), name='api_admin_users'),
 
     # Test modülü URL'leri
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
 ]

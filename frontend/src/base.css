@@ -18,6 +18,16 @@
   --soft-blue: #a3b1f7;
   --pastel-pink: #f9a8d4;
   --pastel-yellow: #fde68a;
+  
+  /* Test Listesi için yeni değişkenler */
+  --border-color: #e9ecef;
+  --text-primary: var(--text-dark);
+  --text-secondary: var(--text-light);
+  --accent-color: var(--turquoise);
+  --accent-color-dark: #00b396;
+  --accent-color-light: #e6fff9;
+  --hover-bg: #f8f9fa;
+  --error-color: #dc3545;
   --border-color: #e0e5f1;
   --gradient: linear-gradient(135deg, var(--turquoise), var(--soft-blue));
 

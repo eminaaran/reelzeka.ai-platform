@@ -16,6 +16,11 @@ const Login = ({ setUser }) => {
       console.log("Login Sayfası: CSRF token alımı başlatılıyor...");
       try {
         await apiClient.get('/csrf/');
+        const cookies = document.cookie.split(';');
+        const csrfToken = cookies.find(cookie => cookie.trim().startsWith('csrftoken='));
+        if (!csrfToken) {
+          throw new Error('CSRF token cookie bulunamadı');
+        }
         console.log("Login Sayfası: CSRF token başarıyla alındı.");
       } catch (err) {
         console.error("Login Sayfası: CSRF token alınamadı:", err);

@@ -1,5 +1,5 @@
 from .admin_serializers import ContentTypeSerializer, DynamicModelSerializer, AdminActionSerializer
-from .test_serializers import SubjectSerializer, TopicSerializer, TestSerializer
+from .test_serializers import SubjectSerializer, TopicSerializer, TestListSerializer, TestDetailSerializer
 from .user_serializers import UserSerializer, UserRegistrationSerializer
 from .rag_serializers import RagQuerySerializer
 
@@ -9,7 +9,8 @@ __all__ = [
     'AdminActionSerializer',
     'SubjectSerializer',
     'TopicSerializer',
-    'TestSerializer',
+    'TestListSerializer',
+    'TestDetailSerializer',
     'UserSerializer',
     'UserRegistrationSerializer',
     'RagQuerySerializer'

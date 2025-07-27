@@ -43,10 +43,12 @@ REST_FRAMEWORK = {
     ],
 }
 
-# CORS ayarları
+# CORS ve Güvenlik Ayarları
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False  # Güvenlik için sadece belirli originlere izin ver
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Vite development server
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 MIDDLEWARE = [
@@ -111,11 +113,13 @@ MEDIA_URL = '/media/'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# --- API, CORS ve CSRF AYARLARI (EN KRİTİK BÖLÜM) ---
-
-# React uygulamasının adresleri
-CORS_ORIGIN_ALLOW_ALL = True
+# --- API, CORS ve CSRF AYARLARI ---
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',
@@ -124,17 +128,15 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
 ]
 
-# Cookie tabanlı kimlik doğrulamanın farklı origin'ler arasında çalışması için
-CORS_ALLOW_CREDENTIALS = True
-
-# CSRF ve Session ayarları (DEBUG=True iken False olmalı)
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_HTTPONLY = False
-SESSION_COOKIE_HTTPONLY = False
-CSRF_COOKIE_DOMAIN = None
-SESSION_COOKIE_DOMAIN = None
-CSRF_USE_SESSIONS = True
+# CSRF ve Session Ayarları
+CSRF_COOKIE_SECURE = False  # Development ortamında False
+SESSION_COOKIE_SECURE = False  # Development ortamında False
+CSRF_COOKIE_HTTPONLY = False  # JavaScript erişimi için False
+SESSION_COOKIE_HTTPONLY = True  # Güvenlik için True
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_USE_SESSIONS = False  # Cookie kullanımı için False
 
 # Django Rest Framework Ayarları
 REST_FRAMEWORK = {

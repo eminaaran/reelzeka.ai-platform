@@ -24,8 +24,8 @@ const Navbar = ({ user, setUser }) => {
   const UserMenu = () => (
     <Dropdown className="user-menu-dropdown">
       <Dropdown.Toggle id="dropdown-custom-components">
-        <div className="user-avatar">{user.username.charAt(0).toUpperCase()}</div>
-        <span>{user.username}</span>
+        <div className="user-avatar">{user?.username?.charAt(0).toUpperCase()}</div>
+        <span>{user?.username}</span>
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
