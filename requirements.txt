@@ -104,3 +104,4 @@ websocket-client==1.8.0
 websockets==15.0.1
 zipp==3.23.0
 zstandard==0.23.0
+drf-yasg==1.21.7

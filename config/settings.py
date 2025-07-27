@@ -30,6 +30,23 @@ INSTALLED_APPS = [
     # 3. Parti Uygulamalar
     'rest_framework',
     'corsheaders',
+    'drf_yasg',
+]
+
+# REST Framework ayarları
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
+
+# CORS ayarları
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Vite development server
 ]
 
 MIDDLEWARE = [

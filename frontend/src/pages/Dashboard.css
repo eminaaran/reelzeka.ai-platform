@@ -33,10 +33,57 @@
   background: linear-gradient(180deg, #330867, #30cfd0);
   border-radius: 16px;
   color: white;
-  display: flex; /* Flexbox olarak ayarla */
-  flex-direction: column; /* Dikey yönde sırala */
-  padding: 1.5rem; /* İç boşlukları koru */
-  overflow: hidden; /* İçerik taşmasını engelle */
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+.chat-container, .test-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.test-container {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+/* Tabs Styling */
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tabs button {
+  padding: 0.8rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tabs button i {
+  font-size: 1.2rem;
+}
+
+.tabs button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tabs button.active {
+  background: #30cfd0;
+  color: #1e1e1e;
 }
 
 .middle-column .chat-header h3 {

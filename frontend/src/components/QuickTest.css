@@ -1,0 +1,86 @@
+.quick-test-container {
+    background: var(--widget-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.quick-test-list {
+    margin-top: 1rem;
+}
+
+.quick-test-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: var(--bg-color);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.quick-test-item:hover {
+    background: var(--hover-color);
+}
+
+.quick-test-info {
+    flex: 1;
+}
+
+.quick-test-info h5 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.quick-test-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.quick-test-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.quick-test-button {
+    background: var(--turquoise);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.quick-test-button:hover {
+    transform: scale(1.1);
+}
+
+.quick-test-container .widget-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--text-color);
+}
+
+.quick-test-container .widget-title i {
+    color: var(--turquoise);
+}
+
+.no-tests {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}

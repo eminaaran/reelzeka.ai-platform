@@ -1,15 +1,39 @@
-// src/api.js
+// src/apiClient.js
+import { createAuthService } from '../../shared/api';
 import axios from 'axios';
 
-// Django API'mizin ana adresi
-const API_URL = 'http://127.0.0.1:8000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
 
-// Axios için temel bir instance (örnek) oluşturuyoruz.
-// Tüm istekler bu ayarları kullanacak.
 const apiClient = axios.create({
     baseURL: API_URL,
-    withCredentials: true, // Tarayıcının cookie'leri (sessionid, csrftoken) göndermesini sağlar
+    withCredentials: true,
 });
+
+// Auth service
+const authService = createAuthService('web');
+
+// Test API İstekleri
+export const testService = {
+    fetchTests: async () => {
+        const response = await apiClient.get('/tests/');
+        return response.data;
+    },
+
+    fetchTest: async (testId) => {
+        const response = await apiClient.get(`/tests/${testId}/`);
+        return response.data;
+    },
+
+    submitTest: async (testId, answers) => {
+        const response = await apiClient.post(`/tests/${testId}/submit/`, answers);
+        return response.data;
+    },
+
+    fetchMyResults: async () => {
+        const response = await apiClient.get('/tests/my-results/');
+        return response.data;
+    }
+};
 
 // Bu bir "interceptor". Her istek gönderilmeden HEMEN ÖNCE çalışır.
 // Görevi, Django'dan aldığımız CSRF token'ını isteğin header'ına eklemektir.

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
-import apiClient from '../apiClient';
+import apiClient from '../api';
 import './Navbar.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -29,15 +29,6 @@ const Navbar = ({ user, setUser }) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item as={Link} to="/dashboard">
-            <i className="bi bi-speedometer2"></i> Dashboard
-        </Dropdown.Item>
-        {user.is_staff && (
-            <Dropdown.Item as={Link} to="/admin">
-                <i className="bi bi-person-badge"></i> Admin Paneli
-            </Dropdown.Item>
-        )}
-        <Dropdown.Divider />
         <Dropdown.Item as={Link} to="/profile">
           <i className="bi bi-person-circle"></i> Profil
         </Dropdown.Item>

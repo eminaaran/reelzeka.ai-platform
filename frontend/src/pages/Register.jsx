@@ -1,7 +1,7 @@
 // src/pages/Register.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import apiClient from '../api';
+import apiClient from '../apiClient';
 import './Register.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -15,51 +15,81 @@ const Register = ({ setUser }) => {
 
   // CSRF token'ı almak için
   useEffect(() => {
-    apiClient.get('/csrf/').catch(err => console.error("CSRF token alınamadı:", err));
+    const getCsrfToken = async () => {
+      console.log("CSRF token alımı başlatılıyor...");
+      try {
+        await apiClient.get('/csrf/');
+        console.log("CSRF token başarıyla alındı.");
+      } catch (err) {
+        console.error("CSRF token alınamadı:", err);
+        setError("Güvenlik anahtarı alınamadı. Lütfen sayfayı yenileyin.");
+      }
+    };
+    getCsrfToken();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    console.log("handleSubmit çağrıldı.");
     setError('');
+
+    if (!username || !password || !password2) {
+        setError("Tüm alanları doldurmak zorunludur.");
+        console.log("Hata: Tüm alanlar doldurulmadı.");
+        return;
+    }
 
     if (password !== password2) {
       setError("Şifreler eşleşmiyor.");
-      setIsLoading(false);
+      console.log("Hata: Şifreler eşleşmiyor.");
       return;
     }
 
     if (password.length < 8) {
         setError("Şifre en az 8 karakter olmalıdır.");
-        setIsLoading(false);
+        console.log("Hata: Şifre çok kısa.");
         return;
     }
 
+    setIsLoading(true);
+    console.log("isLoading: true olarak ayarlandı.");
+
     try {
+      console.log("Kayıt isteği gönderiliyor...");
+      console.log("Kullanıcı Adı:", username);
+      console.log("Şifre (gönderilmiyor, sadece varlığı kontrol ediliyor):");
       const response = await apiClient.post('/register/', {
         username,
         password,
       });
       
+      console.log("Kayıt başarılı oldu:", response.data);
       setUser(response.data); 
       navigate('/dashboard');
       
     } catch (err) {
+      console.error("Kayıt hatası:", err);
       if (err.response && err.response.data) {
         const errorData = err.response.data;
-        const errorMessages = Object.values(errorData).flat().join(' ');
-        setError(errorMessages || 'Kayıt başarısız oldu. Lütfen tekrar deneyin.');
+        if (errorData.username) {
+            setError(`Kullanıcı Adı: ${errorData.username.join(' ')}`);
+        } else if (errorData.password) {
+            setError(`Şifre: ${errorData.password.join(' ')}`);
+        } else {
+            const errorMessages = Object.values(errorData).flat().join(' ');
+            setError(errorMessages || 'Kayıt başarısız oldu. Lütfen tekrar deneyin.');
+        }
       } else {
-        setError('Kayıt sırasında bir hata oluştu.');
+        setError('Kayıt sırasında bir sunucu hatası oluştu.');
       }
-      console.error("Register error:", err);
     } finally {
         setIsLoading(false);
+        console.log("isLoading: false olarak ayarlandı.");
     }
-  };
+  }, [username, password, password2, navigate, setUser]);
 
   return (
-    <div className="login-page-container"> {/* Login sayfasından gelen ana sarmalayıcı */}
+    <div className="login-page-container"> 
       {/* SOL SÜTUN */}
       <div className="login-column left-column">
         <div className="welcome-content">
@@ -85,19 +115,45 @@ const Register = ({ setUser }) => {
           <form onSubmit={handleSubmit} className="login-form" noValidate>
             <div className="input-group">
               <label htmlFor="username">Kullanıcı Adı</label>
-              <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required autoComplete="username" />
+              <input 
+                type="text" 
+                id="username" 
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)} 
+                required 
+                autoComplete="username" 
+              />
             </div>
             <div className="input-group">
               <label htmlFor="password">Şifre</label>
-              <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
+              <input 
+                type="password" 
+                id="password" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                required 
+                autoComplete="new-password" 
+              />
             </div>
             <div className="input-group">
               <label htmlFor="password2">Şifreyi Onayla</label>
-              <input type="password" id="password2" value={password2} onChange={(e) => setPassword2(e.target.value)} required autoComplete="new-password" />
+              <input 
+                type="password" 
+                id="password2" 
+                value={password2} 
+                onChange={(e) => setPassword2(e.target.value)} 
+                required 
+                autoComplete="new-password" 
+              />
             </div>
-            <button type="submit" className="login-button" disabled={isLoading}>
-              {isLoading ? 'Hesap Oluşturuluyor...' : 'Hesap Oluştur'}
-            </button>
+            <button
+                 type="submit"
+                 className="login-button"
+                 disabled={isLoading}
+                 onClick={() => console.log('Tıklandı')}
+                >
+                  {isLoading ? 'Hesap Oluşturuluyor...' : 'Hesap Oluştur'}
+              </button>
           </form>
         </div>
         <div className="signup-footer">

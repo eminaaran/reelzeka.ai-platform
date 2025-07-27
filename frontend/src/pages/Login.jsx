@@ -1,7 +1,7 @@
 // src/pages/Login.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import apiClient from '../api';
+import apiClient from '../apiClient';
 import './Login.css';
 
 const Login = ({ setUser }) => {
@@ -12,22 +12,43 @@ const Login = ({ setUser }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    apiClient.get('/csrf/').catch(err => console.error("CSRF token could not be fetched:", err));
+    const getCsrfToken = async () => {
+      console.log("Login Sayfası: CSRF token alımı başlatılıyor...");
+      try {
+        await apiClient.get('/csrf/');
+        console.log("Login Sayfası: CSRF token başarıyla alındı.");
+      } catch (err) {
+        console.error("Login Sayfası: CSRF token alınamadı:", err);
+        setError("Güvenlik anahtarı alınamadı. Lütfen sayfayı yenileyin.");
+      }
+    };
+    getCsrfToken();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Login Sayfası: handleSubmit çağrıldı.");
     setIsLoading(true);
     setError('');
 
     try {
+      console.log("Login Sayfası: Giriş isteği gönderiliyor...");
+      console.log("Login Sayfası: Kullanıcı Adı:", username);
+      console.log("Login Sayfası: Şifre (gönderilmiyor, sadece varlığı kontrol ediliyor):");
       const response = await apiClient.post('/login/', { username, password });
+      console.log("Login Sayfası: Giriş başarılı oldu:", response.data);
       setUser(response.data);
       navigate('/dashboard');
     } catch (err) {
-      setError('Giriş başarısız. Lütfen kullanıcı adı veya şifrenizi kontrol edin.');
+      console.error("Login Sayfası: Giriş hatası:", err);
+      if (err.response && err.response.data) {
+        setError(err.response.data.error || 'Giriş başarısız. Lütfen kullanıcı adı veya şifrenizi kontrol edin.');
+      } else {
+        setError('Giriş sırasında bir sunucu hatası oluştu.');
+      }
     } finally {
       setIsLoading(false);
+      console.log("Login Sayfası: isLoading: false olarak ayarlandı.");
     }
   };
 

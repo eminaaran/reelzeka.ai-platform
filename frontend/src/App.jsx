@@ -1,7 +1,7 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, Link } from 'react-router-dom';
-import apiClient from './api';
+import apiClient from './apiClient';
 
 // Sayfalar ve bileşenler
 
@@ -16,6 +16,13 @@ import AdminRoute from './components/AdminRoute'; // AdminRoute'u import et
 const PrivateRoute = ({ user }) => {
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
+
+// Admin sayfası için özel düzen
+const AdminLayout = () => (
+  <>
+    <Outlet />
+  </>
+);
 
 // Navbar'ı içeren genel sayfa düzeni
 const MainLayout = ({ user, setUser }) => (
@@ -32,17 +39,20 @@ function App() {
 
   useEffect(() => {
     const checkUserAuth = async () => {
-          try {
-            const response = await apiClient.get('/check-auth/');
-            setUser(response.data);
-            console.log("User data from check-auth:", response.data); // user objesini konsola yazdır
-          } catch (error) {
-            setUser(null);
-            console.error("Auth check error:", error); // Hataları da konsola yazdır
-          } finally {
-            setIsLoading(false);
-          }
-        };
+      try {
+        // Önce CSRF token'ı al
+        await apiClient.get('/csrf/');
+        // Sonra kimlik kontrolü yap
+        const response = await apiClient.get('/check-auth/');
+        setUser(response.data);
+        console.log("User data from check-auth:", response.data);
+      } catch (error) {
+        setUser(null);
+        console.error("Auth check error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     checkUserAuth();
   }, []);
 
@@ -57,14 +67,18 @@ function App() {
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/register" element={<Register setUser={setUser} />} />
 
+          {/* Admin rotası - Navbar içermez */}
+          <Route element={<AdminLayout />}>
+            <Route element={<AdminRoute user={user} isLoading={false} />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+            </Route>
+          </Route>
+
           {/* Navbar GEREKTİREN, korumalı rotalar */}
           <Route element={<MainLayout user={user} setUser={setUser} />}>
             <Route element={<PrivateRoute user={user} isLoading={false} />}>
               <Route path="/dashboard" element={<Dashboard />} />
               {/* Diğer korumalı rotalar buraya */}
-            </Route>
-            <Route element={<AdminRoute user={user} isLoading={false} />}>
-              <Route path="/admin" element={<AdminDashboard />} />
             </Route>
           </Route>
 
