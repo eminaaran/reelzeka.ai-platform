@@ -11,6 +11,13 @@ __pycache__/
 # Veritabanı
 *.sqlite3
 
+# Bağımlılıklar
+/node_modules
+
+# Build çıktıları
+/dist
+
+
 # IDE/Editör dosyaları
 .vscode/
 .idea/
