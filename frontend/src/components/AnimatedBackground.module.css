@@ -1,0 +1,51 @@
+/* AnimatedBackground.module.css */
+.animatedBackgroundContainer {
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  /* Yeni, turkuaz ağırlıklı gradient */
+  background: linear-gradient(160deg, #330867 0%, #30cfd0 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.contentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 100vh;
+    position: relative;
+    z-index: 2;
+}
+
+/* Floating UI Snippets */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.snippet {
+  position: absolute;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  animation: float 6s ease-in-out infinite;
+  z-index: 1;
+  font-size: 0.9rem;
+}
+
+.snippet1 { top: 45%; left: 15%; animation-delay: 0s; }
+.snippet2 { top: 65%; left: 10%; animation-delay: 2s; }
+.snippet3 { top: 50%; right: 12%; animation-delay: 1s; }
+.snippet4 { bottom: 15%; right: 18%; animation-delay: 3s; }
+
+.snippet svg { margin-right: 8px; }
+.graphBar { width: 80%; height: 5px; background: #30cfd0; border-radius: 5px; margin-top: 5px; }

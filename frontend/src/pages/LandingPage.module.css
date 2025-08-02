@@ -1,0 +1,161 @@
+/* LandingPage.module.css - Global stiller eklendi */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+.heroContent {
+  text-align: center;
+  color: white;
+  margin-bottom: 3rem;
+  z-index: 2;
+}
+
+.heroHeadline {
+  font-size: 3.8rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.heroSubheadline {
+  font-size: 1.25rem;
+  font-weight: 400;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Dönen Kart Stilleri (Modüler) */
+.authCardFlipper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  min-height: 540px;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+
+.authCardFlipper.isFlipped {
+  transform: rotateY(180deg);
+}
+
+.authCardFront,
+.authCardBack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 35px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background-color: white;
+  border: 1px solid #e2e8f0;
+}
+
+.authCardBack {
+  transform: rotateY(180deg);
+}
+
+.authToggleLink {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: #4a5568;
+}
+
+.authToggleLink span {
+  color: #30cfd0;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.authToggleLink span:hover {
+  color: #28a8a9;
+  text-decoration: underline;
+}
+
+/* Login ve Register bileşenleri için GLOBAL stiller */
+:global(.auth-form-container) {
+  width: 100%;
+  text-align: center;
+}
+
+:global(.auth-logo) {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a202c;
+  margin-bottom: 0.75rem;
+}
+
+:global(.auth-title) {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 0.5rem;
+}
+
+:global(.auth-subtitle) {
+  font-size: 1rem;
+  color: #4a5568;
+  margin-bottom: 2rem;
+}
+
+:global(.alert-danger) {
+    color: #c53030;
+    background-color: #fed7d7;
+    border: 1px solid #fbb6b6;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+:global(.auth-form) .input-group {
+  margin-bottom: 1.25rem;
+}
+
+:global(.auth-form) input {
+  width: 100%;
+  padding: 1rem 1.1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:global(.auth-form) input:focus {
+  outline: none;
+  border-color: #30cfd0;
+  box-shadow: 0 0 0 2px rgba(48, 207, 208, 0.5);
+}
+
+:global(.auth-button) {
+  width: 100%;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #30cfd0;
+  color: #1e1e1e;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(48, 207, 208, 0.39);
+}
+
+:global(.auth-button:disabled) {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+:global(.auth-button:hover:not(:disabled)) {
+  background-color: #28a8a9;
+  transform: translateY(-2px);
+}

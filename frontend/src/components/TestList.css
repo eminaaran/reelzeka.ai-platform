@@ -132,8 +132,8 @@
 .start-test-button {
     width: 100%;
     padding: 0.8rem;
-    background: linear-gradient(135deg, var(--primary-color), #2ba2a3);
-    color: white;
+    background-color: #30cfd0; /* Direkt turkuaz rengi atandı */
+    color: #1e1e1e; /* Koyu metin rengi */
     border: none;
     border-radius: 8px;
     font-weight: 600;

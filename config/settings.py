@@ -7,15 +7,11 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
-# !! KENDİ SECRET_KEY'İNİ KORU !!
-# Eğer eski dosyan duruyorsa, oradaki SECRET_KEY'i kopyala. Yoksa bu geçici kalabilir.
-SECRET_KEY = 'django-insecure-SENIN-MEVCUT-ANAHTARIN-BURADA-OLMALI'
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key-for-development')
 DEBUG = True
-
 ALLOWED_HOSTS = ["*"]
 
-# Application definition
+# --- UYGULAMA TANIMLARI ---
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -23,38 +19,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # Bizim Uygulamamız
-    'core.apps.CoreConfig',
-
-    # 3. Parti Uygulamalar
     'rest_framework',
     'corsheaders',
     'drf_yasg',
+    'import_export',
+    'core',
 ]
 
-# REST Framework ayarları
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-}
-
-# CORS ve Güvenlik Ayarları
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = False  # Güvenlik için sadece belirli originlere izin ver
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
-
+# --- MIDDLEWARE (SIRALAMA ÖNEMLİ) ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # CORS Middleware'i CommonMiddleware'den önce gelmeli
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,7 +58,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database
+# --- VERİTABANI ---
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -91,7 +66,6 @@ DATABASES = {
     }
 }
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
@@ -99,51 +73,37 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'tr'
 TIME_ZONE = 'Europe/Istanbul'
 USE_I18N = True
 USE_TZ = True
 
-# Static & Media Files
 STATIC_URL = 'static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# --- API, CORS ve CSRF AYARLARI ---
-CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOW_CREDENTIALS = True
+# --- GÜVENLİK VE API AYARLARI (EN ÖNEMLİ KISIM) ---
+
+# CORS Ayarları: React'in Django ile konuşmasına izin verir.
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
+    "http://127.0.0.1:5173",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
+# CSRF Ayarları: React'i güvenilir bir kaynak olarak tanıtır.
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
+    "http://127.0.0.1:5173",
 ]
 
-# CSRF ve Session Ayarları
-CSRF_COOKIE_SECURE = False  # Development ortamında False
-SESSION_COOKIE_SECURE = False  # Development ortamında False
-CSRF_COOKIE_HTTPONLY = False  # JavaScript erişimi için False
-SESSION_COOKIE_HTTPONLY = True  # Güvenlik için True
-CSRF_COOKIE_SAMESITE = 'Lax'
+# COOKIE Ayarları: Tarayıcının cookie'leri doğru göndermesini sağlar.
 SESSION_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_USE_SESSIONS = False  # Cookie kullanımı için False
+CSRF_COOKIE_SAMESITE = 'Lax'
 
-# Django Rest Framework Ayarları
+# Django Rest Framework Ayarları: Güvenlik duvarlarını varsayılan olarak aktif eder.
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated', # Varsayılan olarak giriş yapmayı zorunlu kıl
+        'rest_framework.permissions.IsAuthenticated',
     ],
 }

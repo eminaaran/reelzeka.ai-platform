@@ -52,6 +52,24 @@
   padding: 1rem;
 }
 
+/* Testi Başlat Butonu Stili */
+.test-container .start-test-button {
+    background-color: #30cfd0;
+    color: #1e1e1e;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.test-container .start-test-button:hover {
+    background-color: #28a8a9;
+}
+
 /* Tabs Styling */
 .tabs {
   display: flex;
@@ -132,7 +150,13 @@
 }
 
 .right-column {
-  flex: 0 0 320px;
+  flex: 0 0 400px; /* Sağ sütunu genişlet */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  height: 100%;
+  align-items: center; /* İçeriği yatayda ortala */
 }
 
 /* --- Genel Widget Stili --- */
@@ -144,6 +168,8 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07); /* Yumuşak gölge */
   display: flex;
   flex-direction: column;
+  width: 100%; /* Widget'ların sütun genişliğini almasını sağla */
+  max-width: 400px; /* Maksimum genişlik belirle */
 }
 
 .widget-title {
@@ -222,6 +248,9 @@
   border-radius: 18px;
   max-width: 85%;
   line-height: 1.6;
+  /* EKLENEN SATIRLAR */
+  white-space: pre-wrap; /* Satır sonlarını ve boşlukları koruyarak alt satıra geçirir */
+  word-wrap: break-word;   /* Çok uzun, bölünemeyen kelimelerin taşmasını engeller */
 }
 
 .ai-message {
@@ -349,4 +378,14 @@
 .quick-test .test-button:hover {
   background-color: var(--primary-bg);
   border-color: var(--soft-blue);
+}
+.message-bubble.ai-message {
+    min-height: 20px;  /* Minimum bir yüksekliği olmasını garantiler */
+    height: auto;      /* Yüksekliğin içeriğe göre otomatik ayarlanmasını sağlar */
+    width: fit-content;/* Genişliğin içeriğe göre ayarlanmasını sağlar */
+    max-width: 80%;    /* Çok uzun mesajların satır atlamasını sağlar */
+    padding: 10px 15px;/* İç boşluk ekler */
+    color: #333;        /* Yazı rengini zorla belirgin bir renk yapar (koyu gri) */
+    background-color: #f0f0f0; /* Arka plan rengini zorla belirgin bir renk yapar (açık gri) */
+    word-wrap: break-word; /* Çok uzun kelimelerin taşmasını engeller */
 }

@@ -1,8 +1,7 @@
 // src/pages/Login.jsx
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import apiClient from '../apiClient';
-import './Login.css';
 
 const Login = ({ setUser }) => {
   const navigate = useNavigate();
@@ -11,41 +10,16 @@ const Login = ({ setUser }) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const getCsrfToken = async () => {
-      console.log("Login Sayfası: CSRF token alımı başlatılıyor...");
-      try {
-        await apiClient.get('/csrf/');
-        const cookies = document.cookie.split(';');
-        const csrfToken = cookies.find(cookie => cookie.trim().startsWith('csrftoken='));
-        if (!csrfToken) {
-          throw new Error('CSRF token cookie bulunamadı');
-        }
-        console.log("Login Sayfası: CSRF token başarıyla alındı.");
-      } catch (err) {
-        console.error("Login Sayfası: CSRF token alınamadı:", err);
-        setError("Güvenlik anahtarı alınamadı. Lütfen sayfayı yenileyin.");
-      }
-    };
-    getCsrfToken();
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login Sayfası: handleSubmit çağrıldı.");
     setIsLoading(true);
     setError('');
 
     try {
-      console.log("Login Sayfası: Giriş isteği gönderiliyor...");
-      console.log("Login Sayfası: Kullanıcı Adı:", username);
-      console.log("Login Sayfası: Şifre (gönderilmiyor, sadece varlığı kontrol ediliyor):");
       const response = await apiClient.post('/login/', { username, password });
-      console.log("Login Sayfası: Giriş başarılı oldu:", response.data);
       setUser(response.data);
       navigate('/dashboard');
     } catch (err) {
-      console.error("Login Sayfası: Giriş hatası:", err);
       if (err.response && err.response.data) {
         setError(err.response.data.error || 'Giriş başarısız. Lütfen kullanıcı adı veya şifrenizi kontrol edin.');
       } else {
@@ -53,20 +27,18 @@ const Login = ({ setUser }) => {
       }
     } finally {
       setIsLoading(false);
-      console.log("Login Sayfası: isLoading: false olarak ayarlandı.");
     }
   };
 
   return (
-    <div className="login-page-container">
-      <div className="login-card">
-        <div className="login-logo">ReelZeka.ai</div>
-        <h1 className="login-title">Tekrar Hoş Geldiniz!</h1>
-        <p className="login-subtitle">Devam etmek için giriş yapın</p>
+    <div className="auth-form-container">
+        <div className="auth-logo">ReelZeka.ai</div>
+        <h2 className="auth-title">Tekrar Hoş Geldiniz!</h2>
+        <p className="auth-subtitle">Devam etmek için giriş yapın</p>
 
         {error && <div className="alert-danger">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="login-form" noValidate>
+        <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <div className="input-group">
             <input
               type="text"
@@ -89,17 +61,10 @@ const Login = ({ setUser }) => {
               autoComplete="current-password"
             />
           </div>
-          <button type="submit" className="login-button" disabled={isLoading}>
+          <button type="submit" className="auth-button" disabled={isLoading}>
             {isLoading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
           </button>
         </form>
-
-        <div className="login-footer-links">
-          <Link to="/forgot-password">Şifrenizi mi unuttunuz?</Link>
-          <span>|</span>
-          <Link to="/register">Hesabınız yok mu? Kaydolun</Link>
-        </div>
-      </div>
     </div>
   );
 };

@@ -11,10 +11,11 @@ import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
 import AdminRoute from './components/AdminRoute'; // AdminRoute'u import et
+import LandingPage from './pages/LandingPage'; // LandingPage'i import et
 
 // Korumalı Rota Bileşeni
 const PrivateRoute = ({ user }) => {
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
+  return user ? <Outlet /> : <Navigate to="/" replace />;
 };
 
 // Admin sayfası için özel düzen
@@ -40,15 +41,13 @@ function App() {
   useEffect(() => {
     const checkUserAuth = async () => {
       try {
-        // Önce CSRF token'ı al
+        // Önce CSRF cookie'sini almayı garanti et
         await apiClient.get('/csrf/');
         // Sonra kimlik kontrolü yap
         const response = await apiClient.get('/check-auth/');
         setUser(response.data);
-        console.log("User data from check-auth:", response.data);
       } catch (error) {
         setUser(null);
-        console.error("Auth check error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -62,10 +61,10 @@ function App() {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5rem' }}>Yükleniyor...</div>
       ) : (
         <Routes>
-          {/* Navbar GEREKTİRMEYEN, herkese açık rotalar */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<Login setUser={setUser} />} />
-          <Route path="/register" element={<Register setUser={setUser} />} />
+          {/* Ana giriş ve kayıt sayfası artık LandingPage */}
+          <Route path="/" element={<LandingPage setUser={setUser} />} />
+
+          {/* Eski rotalar kaldırıldı */}
 
           {/* Admin rotası - Navbar içermez */}
           <Route element={<AdminLayout />}>
@@ -77,7 +76,7 @@ function App() {
           {/* Navbar GEREKTİREN, korumalı rotalar */}
           <Route element={<MainLayout user={user} setUser={setUser} />}>
             <Route element={<PrivateRoute user={user} isLoading={false} />}>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard user={user} />} />
               {/* Diğer korumalı rotalar buraya */}
             </Route>
           </Route>

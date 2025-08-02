@@ -11,6 +11,7 @@ const TestRunner = ({ testId, onClose }) => {
     const [showResults, setShowResults] = useState(false);
     const [results, setResults] = useState(null);
     const [startTime, setStartTime] = useState(null);
+    const [tempMessage, setTempMessage] = useState(null); // Yeni durum
 
     useEffect(() => {
         const fetchTest = async () => {
@@ -29,10 +30,10 @@ const TestRunner = ({ testId, onClose }) => {
         fetchTest();
     }, [testId]);
 
-    const handleAnswer = (questionId, answer) => {
+    const handleAnswer = (questionId, option) => {
         setAnswers(prev => ({
             ...prev,
-            [questionId]: answer
+            [questionId]: option.text // Sadece şıkkın metin değerini kaydet
         }));
     };
 
@@ -50,11 +51,20 @@ const TestRunner = ({ testId, onClose }) => {
                 answers: answers,
                 duration_taken: Math.floor((Date.now() - startTime) / 1000)
             });
-            setResults(response.data);
-            setShowResults(true);
+            setTempMessage('Test kaydedildi!'); // Başarı mesajını ayarla
+            setTimeout(() => {
+                setResults(response.data);
+                setShowResults(true);
+                setTempMessage(null); // Mesajı temizle
+            }, 1500); // 1.5 saniye sonra sonuçları göster
         } catch (err) {
-            console.error('Test gönderme hatası:', err);
-            setError('Test gönderilirken bir hata oluştu.');
+            console.error("Test gönderme hatası:", err);
+            if (err.response) {
+                console.error("Backend hata yanıtı:", err.response.data);
+                console.error("Backend hata durumu:", err.response.status);
+            }
+            setError('Test gönderilirken bir hata oluştu.'); // Hata mesajını koru
+            setTempMessage(null); // Herhangi bir önceki mesajı temizle
         }
     };
 
@@ -119,6 +129,7 @@ const TestRunner = ({ testId, onClose }) => {
     return (
         <div className="modal-overlay">
             <div className="test-modal">
+                {tempMessage && <div className="temp-message">{tempMessage}</div>} {/* Mesajı burada göster */}
                 <div className="modal-header">
                     <h2>Mini Test</h2>
                     <button onClick={onClose} className="close-button">✕</button>
@@ -135,8 +146,10 @@ const TestRunner = ({ testId, onClose }) => {
                             {currentQuestion.options.map((option, index) => (
                                 <div
                                     key={index}
-                                    className={`option ${answers[currentQuestion.id] === option ? 'selected' : ''}`}
+                                    className={`option ${answers[currentQuestion.id] === option.text ? 'selected' : ''}`}
                                     onClick={() => handleAnswer(currentQuestion.id, option)}
+                                    tabIndex="0"
+                                    role="button"
                                 >
                                     {option.text}
                                 </div>
@@ -154,11 +167,11 @@ const TestRunner = ({ testId, onClose }) => {
                         Önceki Soru
                     </button>
                     {currentQuestionIndex === questions.length - 1 ? (
-                        <button className="nav-button submit-button" onClick={handleSubmit}>
+                        <button className="nav-button submit-button" onClick={handleSubmit} disabled={!answers[currentQuestion.id]}>
                             Testi Bitir
                         </button>
                     ) : (
-                        <button className="nav-button next-button" onClick={handleNextQuestion}>
+                        <button className="nav-button next-button" onClick={handleNextQuestion} disabled={!answers[currentQuestion.id]}>
                             Sonraki Soru
                         </button>
                     )}

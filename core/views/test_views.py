@@ -24,7 +24,7 @@ class TopicViewSet(viewsets.ModelViewSet):
 
 class TestViewSet(viewsets.ModelViewSet):
     serializer_class = TestListSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """Sadece public testleri göster"""
@@ -89,13 +89,20 @@ class TestViewSet(viewsets.ModelViewSet):
         # Skoru hesapla
         score = (correct_count / total_questions) * 100 if total_questions > 0 else 0
 
-        # Sonucu kaydet
-        result = UserTestResult.objects.create(
+        # Sonucu kaydet veya güncelle
+        result, created = UserTestResult.objects.get_or_create(
             user=request.user,
             test=test,
-            score=score,
-            duration_taken=request.data.get('duration_taken', 0)
+            defaults={
+                'score': score,
+                'duration_taken': request.data.get('duration_taken', 0)
+            }
         )
+
+        if not created:
+            result.score = score
+            result.duration_taken = request.data.get('duration_taken', 0)
+            result.save()
 
         serializer = TestResultSerializer(result)
         return Response(serializer.data)

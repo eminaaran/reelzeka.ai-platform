@@ -8,8 +8,6 @@ from .user_views import (
     get_csrf_token,
     UserListView
 )
-from .rag_views import RagQueryAPIView
-
 __all__ = [
     'AdminAPIViewSet',
     'SubjectViewSet',
@@ -21,5 +19,4 @@ __all__ = [
     'CheckAuthAPIView',
     'get_csrf_token',
     'UserListView',
-    'RagQueryAPIView'
 ]

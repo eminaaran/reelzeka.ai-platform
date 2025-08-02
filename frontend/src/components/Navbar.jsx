@@ -17,7 +17,7 @@ const Navbar = ({ user, setUser }) => {
     } finally {
       localStorage.removeItem('user');
       setUser(null);
-      navigate('/login');
+      navigate('/');
     }
   };
 
@@ -66,9 +66,14 @@ const Navbar = ({ user, setUser }) => {
           {user ? (
             <UserMenu />
           ) : (
-            <Link to="/login" className="btn btn-primary">
-              Giriş Yap
-            </Link>
+            <div className="auth-buttons">
+              <Link to="/auth?mode=login" className="btn btn-outline-primary me-2">
+                Giriş Yap
+              </Link>
+              <Link to="/auth?mode=register" className="btn btn-primary">
+                Kayıt Ol
+              </Link>
+            </div>
           )}
         </div>
       </div>

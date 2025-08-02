@@ -1,10 +1,10 @@
 // src/pages/Dashboard.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import apiClient from '../apiClient';
 import '../base.css';
 import './Dashboard.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import TestList from '../components/TestList';
+import { chatService } from '../apiClient'; // Bu import'un doğru olduğundan emin ol
 
 const TipCard = ({ icon, title, description }) => (
   <div className="tip-card">
@@ -16,7 +16,7 @@ const TipCard = ({ icon, title, description }) => (
   </div>
 );
 
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [isAiResponding, setIsAiResponding] = useState(false);
@@ -48,18 +48,25 @@ const Dashboard = () => {
     setIsAiResponding(true);
 
     try {
-      const response = await apiClient.post('/api/rag-query/', { question: currentMessage });
-      const aiResponse = { id: Date.now() + 1, sender: 'ai', text: response.data.answer };
-      setMessages(prev => [...prev, aiResponse]);
-    } catch (error) {
-      const errorResponse = { id: Date.now() + 1, sender: 'ai', text: 'Üzgünüm, bir sorun oluştu.' };
-      setMessages(prev => [...prev, errorResponse]);
-    } finally {
-      setIsAiResponding(false);
-      inputRef.current?.focus(); // Mesaj gönderildikten sonra input'a tekrar odaklan
-    }
-  };
+        // Temiz ve basit API çağrısı
+        const response = await chatService.askQuestion(currentMessage);
+        
+        const aiResponse = { 
+            id: Date.now() + 1, 
+            sender: 'ai', 
+            text: response.data.answer 
+        };
+        setMessages(prev => [...prev, aiResponse]);
 
+    } catch (error) {
+        console.error("Chatbot hatası:", error.response);
+        const errorResponse = { id: Date.now() + 1, sender: 'ai', text: 'Üzgünüm, AI asistana ulaşırken bir sorun oluştu.' };
+        setMessages(prev => [...prev, errorResponse]);
+    } finally {
+        setIsAiResponding(false);
+        inputRef.current?.focus();
+    }
+};
   return (
     <div className="dashboard-container">
       {/* SOL SÜTUN */}

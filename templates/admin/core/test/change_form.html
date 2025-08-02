@@ -1,0 +1,9 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+    <li>
+        <a href="{% url 'admin:test-wizard' original.pk %}" class="button">{% trans "Test Oluşturma Sihirbazı" %}</a>
+    </li>
+    {{ block.super }}
+{% endblock %}

@@ -11,7 +11,9 @@ from .views.user_views import (
     get_csrf_token,
     UserListView
 )
-from .views.rag_views import RagQueryAPIView
+from django.urls import path
+from .views.chat_views import ChatbotView # Yeni view'ı import et
+
 
 # ViewSet'ler için router oluştur
 router = DefaultRouter()
@@ -27,8 +29,10 @@ urlpatterns = [
     path('logout/', UserLogoutAPIView.as_view(), name='api_logout'),
     path('check-auth/', CheckAuthAPIView.as_view(), name='api_check_auth'),
     path('csrf/', get_csrf_token, name='api_csrf'),
-    path('rag-query/', RagQueryAPIView.as_view(), name='api_rag_query'),
     path('admin/users/', UserListView.as_view(), name='api_admin_users'),
+    path('chatbot-query/', ChatbotView.as_view(), name='chatbot-query'),
+
+     
 
     # Test modülü URL'leri
     path('', include(router.urls)),

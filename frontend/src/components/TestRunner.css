@@ -94,9 +94,10 @@
 }
 
 .option.selected {
-    background: var(--primary-color);
+    background: var(--turquoise);
     color: white;
-    border-color: var(--primary-color);
+    border-color: var(--turquoise);
+    box-shadow: 0 0 0 3px var(--turquoise-light), 0 0 0 6px var(--turquoise-dark);
 }
 
 .test-controls {
@@ -113,6 +114,8 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    background: var(--turquoise);
+    color: white;
 }
 
 .prev-button {
@@ -120,8 +123,13 @@
     color: var(--text-color);
 }
 
+.nav-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .next-button, .submit-button {
-    background: var(--primary-color);
+    background: var(--turquoise);
     color: white;
 }
 
@@ -176,4 +184,25 @@
 .review-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.temp-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1.5rem 2.5rem;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 1001;
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; display: none; }
 }

@@ -1,123 +1,59 @@
 // src/pages/Register.jsx
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import apiClient from '../apiClient';
-import './Register.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Register = ({ setUser }) => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState(''); // Şifre onayı için
+  const [password2, setPassword2] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // CSRF token'ı almak için
-  useEffect(() => {
-    const getCsrfToken = async () => {
-      console.log("CSRF token alımı başlatılıyor...");
-      try {
-        await apiClient.get('/csrf/');
-        console.log("CSRF token başarıyla alındı.");
-      } catch (err) {
-        console.error("CSRF token alınamadı:", err);
-        setError("Güvenlik anahtarı alınamadı. Lütfen sayfayı yenileyin.");
-      }
-    };
-    getCsrfToken();
-  }, []);
-
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    console.log("handleSubmit çağrıldı.");
     setError('');
 
-    if (!username || !password || !password2) {
-        setError("Tüm alanları doldurmak zorunludur.");
-        console.log("Hata: Tüm alanlar doldurulmadı.");
-        return;
-    }
-
     if (password !== password2) {
-      setError("Şifreler eşleşmiyor.");
-      console.log("Hata: Şifreler eşleşmiyor.");
-      return;
+      return setError("Şifreler eşleşmiyor.");
     }
-
     if (password.length < 8) {
-        setError("Şifre en az 8 karakter olmalıdır.");
-        console.log("Hata: Şifre çok kısa.");
-        return;
+        return setError("Şifre en az 8 karakter olmalıdır.");
     }
 
     setIsLoading(true);
-    console.log("isLoading: true olarak ayarlandı.");
 
     try {
-      console.log("Kayıt isteği gönderiliyor...");
-      console.log("Kullanıcı Adı:", username);
-      console.log("Şifre (gönderilmiyor, sadece varlığı kontrol ediliyor):");
-      const response = await apiClient.post('/register/', {
-        username,
-        password,
-      });
-      
-      console.log("Kayıt başarılı oldu:", response.data);
-      setUser(response.data); 
+      const response = await apiClient.post('/register/', { username, password });
+      setUser(response.data);
       navigate('/dashboard');
-      
     } catch (err) {
-      console.error("Kayıt hatası:", err);
       if (err.response && err.response.data) {
         const errorData = err.response.data;
-        if (errorData.username) {
-            setError(`Kullanıcı Adı: ${errorData.username.join(' ')}`);
-        } else if (errorData.password) {
-            setError(`Şifre: ${errorData.password.join(' ')}`);
-        } else {
-            const errorMessages = Object.values(errorData).flat().join(' ');
-            setError(errorMessages || 'Kayıt başarısız oldu. Lütfen tekrar deneyin.');
-        }
+        const errorMessages = Object.values(errorData).flat().join(' ');
+        setError(errorMessages || 'Kayıt başarısız oldu. Lütfen tekrar deneyin.');
       } else {
         setError('Kayıt sırasında bir sunucu hatası oluştu.');
       }
     } finally {
-        setIsLoading(false);
-        console.log("isLoading: false olarak ayarlandı.");
+      setIsLoading(false);
     }
   }, [username, password, password2, navigate, setUser]);
 
   return (
-    <div className="login-page-container"> 
-      {/* SOL SÜTUN */}
-      <div className="login-column left-column">
-        <div className="welcome-content">
-          <h1 className="welcome-title">ReelZeka'ya Katıl!</h1>
-          <p className="welcome-subtitle">YKS için yapay zeka destekli çalışma arkadaşın.</p>
-          <ul className="feature-list">
-            <li><i className="bi bi-lightbulb"></i> Akıllı Soru Üretici</li>
-            <li><i className="bi bi-calendar-check"></i> Kişiselleştirilmiş Çalışma Planı</li>
-            <li><i className="bi bi-chat-dots"></i> Anlık Sohbet Yardımı</li>
-            <li><i className="bi bi-graph-up-arrow"></i> Haftalık İlerleme Takibi</li>
-          </ul>
-        </div>
-      </div>
+    <div className="auth-form-container">
+        <div className="auth-logo">ReelZeka.ai</div>
+        <h2 className="auth-title">Hesap Oluştur</h2>
+        <p className="auth-subtitle">Yapay zeka destekli öğrenme macerasına katıl.</p>
 
-      {/* ORTA SÜTUN (ANA ODAK) */}
-      <div className="login-column middle-column">
-        <div className="login-form-wrapper">
-          <div className="mascot-icon">
-            <i className="bi bi-person-plus-fill"></i>
-          </div>
-          <h2>Hesap Oluştur</h2>
-          {error && <div className="alert alert-danger">{error}</div>}
-          <form onSubmit={handleSubmit} className="login-form" noValidate>
+        {error && <div className="alert-danger">{error}</div>}
+
+        <form onSubmit={handleSubmit} className="auth-form" noValidate>
             <div className="input-group">
-              <label htmlFor="username">Kullanıcı Adı</label>
               <input 
                 type="text" 
-                id="username" 
+                placeholder="Kullanıcı Adı" 
                 value={username} 
                 onChange={(e) => setUsername(e.target.value)} 
                 required 
@@ -125,10 +61,9 @@ const Register = ({ setUser }) => {
               />
             </div>
             <div className="input-group">
-              <label htmlFor="password">Şifre</label>
               <input 
                 type="password" 
-                id="password" 
+                placeholder="Şifre"
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
                 required 
@@ -136,54 +71,19 @@ const Register = ({ setUser }) => {
               />
             </div>
             <div className="input-group">
-              <label htmlFor="password2">Şifreyi Onayla</label>
               <input 
                 type="password" 
-                id="password2" 
+                placeholder="Şifreyi Onayla"
                 value={password2} 
                 onChange={(e) => setPassword2(e.target.value)} 
                 required 
                 autoComplete="new-password" 
               />
             </div>
-            <button
-                 type="submit"
-                 className="login-button"
-                 disabled={isLoading}
-                 onClick={() => console.log('Tıklandı')}
-                >
-                  {isLoading ? 'Hesap Oluşturuluyor...' : 'Hesap Oluştur'}
-              </button>
-          </form>
-        </div>
-        <div className="signup-footer">
-          <p>Zaten bir hesabın var mı? <Link to="/login">Buradan giriş yap</Link></p>
-        </div>
-      </div>
-
-      {/* SAĞ SÜTUN */}
-      <div className="login-column right-column">
-        <div className="mockup-container">
-          <div className="mockup-card card-1">
-            <p><strong>Hedef:</strong> +50 Net</p>
-            <div className="progress-bar">
-              <div className="progress" style={{width: '75%'}}></div>
-            </div>
-          </div>
-          <div className="mockup-card card-2">
-            <i className="bi bi-book"></i>
-            <p><strong>Sıradaki Konu:</strong> Fonksiyonlar</p>
-          </div>
-          <div className="mockup-card card-3">
-            <i className="bi bi-chat-quote-fill"></i>
-            <p>"Bu konuyu anlamadım, daha basit anlatır mısın?"</p>
-          </div>
-           <div className="mockup-card card-4">
-            <i className="bi bi-check-circle-fill"></i>
-            <p>Günlük 50 soru hedefin tamamlandı!</p>
-          </div>
-        </div>
-      </div>
+            <button type="submit" className="auth-button" disabled={isLoading}>
+                {isLoading ? 'Hesap Oluşturuluyor...' : 'Ücretsiz Kaydol'}
+            </button>
+        </form>
     </div>
   );
 };
